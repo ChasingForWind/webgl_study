@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Three框架</title>
-
-    <link rel="stylesheet" style="text/css" href="css/spectrum.css">
     <script src="js/three.js-dev/build/three.js"></script>
     <script src="js/dat.gui.js"></script>
     <script src="js/jquery-1.9.1.js"></script>
     <script src="js/spectrum.js"></script>
-
     <style type="text/css">
+
         div#canvas-frame {
             border: none;
             cursor: pointer;
@@ -51,34 +49,61 @@
         }
 
         var light;
+        var lightPos;
+
         function initLight() {
-            var ParamObj = function(){
+            var ParamObj = function() {
                 this.x = 0;
                 this.y = 0;
                 this.z = 0;
                 this.intensity = 1;
-            }
+            };
+
             param = new ParamObj();
             var gui = new dat.GUI();
-            gui.add(param,"x",-10000,10000).name("方向光x轴的位置");
-            gui.add(param,"y",-10000,10000).name("方向光y轴的位置");
-            gui.add(param,"z",-10000,10000).name("方向光z轴的位置");
-            gui.add(param,'intensity',0,1).name("光的强度");
+            gui.add(param,"x",-10000,10000).name("方向光X的位置");
+            gui.add(param,"y",-10000,10000).name("方向光Y的位置");
+            gui.add(param,"z",-10000,10000).name("方向光Z的位置");
+            gui.add(param,"intensity",0,1).name("方向光的强度");
 
-
-            light = new THREE.DirectionalLight(0xFF0000,1);
-            light.position.set(param.x,param.y,param.z);
-            light.intensity = param.intensity;
+            light = new THREE.DirectionalLight(0xFF0000,param.intensity);
+            light.position.set(param.x, param.y, param.z);
             scene.add(light);
+
         }
 
         var cube;
         function initObject() {
-            var geometry = new THREE.CubeGeometry( 200, 100, 50);
-            var material = new THREE.MeshLambertMaterial( { color:0xFFFFFF} );
+            var geometry = new THREE.CubeGeometry( 200, 100, 50,4,4);
+            var material = new THREE.MeshLambertMaterial( { color:0xFF0000} );
             var mesh = new THREE.Mesh( geometry,material);
             mesh.position.set(0,0,0);
             scene.add(mesh);
+
+            var geometry2 = new THREE.CubeGeometry( 200, 100, 50,4,4);
+            var material2 = new THREE.MeshLambertMaterial( { color:0xFF0000} );
+            var mesh2 = new THREE.Mesh( geometry2,material2);
+            mesh2.position.set(-300,0,0);
+            scene.add(mesh2);
+
+            var geometry3 = new THREE.CubeGeometry( 200, 100, 50,4,4);
+            var material3 = new THREE.MeshLambertMaterial( { color:0xFF0000} );
+            var mesh3 = new THREE.Mesh( geometry3,material3);
+            mesh3.position.set(0,-150,0);
+            scene.add(mesh3);
+
+            var mesh4 = new THREE.Mesh( geometry3,material3);
+            mesh4.position.set(0,150,0);
+            scene.add(mesh4);
+
+            var mesh5 = new THREE.Mesh( geometry3,material3);
+            mesh5.position.set(300,0,0);
+            scene.add(mesh5);
+
+            var mesh6 = new THREE.Mesh( geometry3,material3);
+            mesh6.position.set(0,0,-100);
+            scene.add(mesh6);
+
         }
 
         function threeStart() {
@@ -89,10 +114,14 @@
             initObject();
             animation();
         }
-        function animation() {
-            light.position.set(param.x,param.y,param.z);
+
+        function animation()
+        {
+            light.position.set(param.x, param.y, param.z);
             light.intensity = param.intensity;
-            renderer.render(scene,camera);
+
+            renderer.clear();
+            renderer.render(scene, camera);
             requestAnimationFrame(animation);
         }
 
@@ -101,21 +130,5 @@
 
 <body onload="threeStart();">
 <div id="canvas-frame"></div>
-<input type="text" id="custom"/>
 </body>
-<script>
-    $("#custom").spectrum({
-        color: "#f00",
-        preferredFormat:"hex",
-        showInitial: true,
-        showInput: true,
-        showPalette:true,
-        showSelection:true,
-        hide:function (tinycolor) {
-            console.log(tinycolor.toHex());
-            light.color.setHex("0x"+tinycolor.toHex());
-            console.log(light.color);
-        }
-    });
-</script>
 </html>
