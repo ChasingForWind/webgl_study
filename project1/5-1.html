@@ -67,7 +67,7 @@
         camera.add( dirLight );
 
 
-        var material = new THREE.MeshLambertMaterial( { color:0xffffff, side: THREE.DoubleSide } );
+        var material = new THREE.MeshLambertMaterial( { color:0xffffff, side: THREE.FrontSide } );
 
 
         var loader = new THREE.VTKLoader();
@@ -116,7 +116,7 @@
     function animate() {
 
         requestAnimationFrame( animate );
-        angle +=0.01;
+        angle +=0.0001;
         if(mesh){
             mesh.rotateY(angle);
             console.log('帅');
