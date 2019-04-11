@@ -136,14 +136,14 @@
         camera.updateMatrixWorld();
 
         // find intersections
-        /*
+            /*
                         raycaster.setFromCamera( mouse, camera );
 
                         var intersects = raycaster.intersectObjects( scene.children );
 
                         if ( intersects.length > 0 ) {
 
-                            if ( INTERSECTED != intersects[ 0 ].object ) {
+                             if ( INTERSECTED != intersects[ 0 ].object ) {
 
                                 if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
 
@@ -151,7 +151,7 @@
                                 INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
                                 INTERSECTED.material.emissive.setHex( 0xff0000 );
 
-                            }
+                             }
 
                         } else {
 
@@ -160,7 +160,14 @@
                             INTERSECTED = null;
 
                         }
-                        */
+
+             */
+        raycaster.setFromCamera( mouse, camera );
+        var intersects = raycaster.intersectObjects( scene.children );
+        for(var i = 0;i<intersects.length;i++){
+           intersects[ 0 ].object.material.emissive.setHex( 0xff0000 );
+        }
+
 
         renderer.render( scene, camera );
 
