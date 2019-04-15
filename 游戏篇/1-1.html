@@ -1,0 +1,194 @@
+
+<!doctype html>
+<html>
+<head>
+    <title>WebGL中文网：超酷的飞行游戏。</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+    <script src="js/three.js"></script>
+    <script src="js/Detector.js"></script>
+    <script src="js/THREEx.FullScreen.js"></script>
+    <script src="js/THREEx.WindowResize.js"></script>
+
+    <script src="js/loaders/ColladaLoader.js"></script>
+    <link  href="css/main.css" rel="stylesheet"/>
+    <script type="text/javascript">
+        var GAME = (function(){
+            var show = function(id){
+                document.getElementById(id).style.display = "block";
+            };
+
+            var hide  = function(id){
+                document.getElementById(id).style.display = "none";
+            };
+            
+            return{
+                running : false,
+
+                    //玩家赢得比赛
+
+                    //玩家输掉比赛
+                    //玩家第一次开始比赛
+                start:function(){
+                  hide("start");
+
+                  running : true;
+                },
+                    //玩家重新开始比赛
+                    //显示开始界面
+                init:function () {
+                    show("start");
+
+                    if(!init()){
+                        animate();
+                    }
+                    //初始化游戏和游戏引擎
+
+                    //设置关卡
+
+                    //设置键盘操控
+                }
+            }
+        })();
+        function main() {
+            GAME.init();
+        }
+            //初始化three,js
+
+        function init(){
+            if( Detector.webgl ){
+                renderer = new THREE.WebGLRenderer({
+                    antialias		: true,	// to get smoother output
+                    preserveDrawingBuffer	: true	// to allow screenshot
+                });
+                //renderer.setFaceCulling(false);
+                renderer.setClearColorHex( 0xBBBBBB, 1 );
+                renderer.shadowMapEnabled = true;
+                renderer.shadowMapSoft = true;
+
+
+                // uncomment if webgl is required
+                //}else{
+                //	Detector.addGetWebGLMessage();
+                //	return true;
+            }else{
+                renderer	= new THREE.CanvasRenderer();
+            }
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            document.getElementById('container').appendChild(renderer.domElement);
+
+            //场景
+            scene = new THREE.Scene();
+            scene.fog = new THREE.Fog( 0x000022, 10, 300 );
+
+
+
+            //加载模型天空地图
+
+            //天空
+            var textureCube = THREE.ImageUtils.CubeTextureLoader( ["images/skybox/posx.jpg", "images/skybox/negx.jpg", "images/skybox/posy.jpg", "images/skybox/negy.jpg", "images/skybox/posz.jpg", "images/skybox/negz.jpg"] );
+            var shader = THREE.ShaderUtils.lib["cube"];
+            //var uniforms = THREE.UniformsUtils.clone( shader.uniforms );
+            shader.uniforms[ "tCube" ].texture = textureCube;
+            shader.uniforms[ "tFlip" ].texture = -1;
+            //uniforms['tCube'].texture= textureCube; // textureCube has been init before
+            var cubeMaterial = new THREE.ShaderMaterial({
+                fragmentShader : shader.fragmentShader,
+                vertexShader : shader.vertexShader,
+                uniforms : shader.uniforms,
+                depthWrite: false,
+            });
+            cubeMaterial.overdraw=true;
+
+            skyboxMesh = new THREE.Mesh( new THREE.CubeGeometry( 5000, 5000, 5000), cubeMaterial);
+            skyboxMesh.flipSided=true;
+            skyboxMesh.castShadow = false;
+            skyboxMesh.receiveShadow = false;
+
+            scene.add(skyboxMesh);
+
+            //相机
+            camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 10000 );
+            camera.position.set(0, 0, 5);
+            //camera.rotation.y=Math.PI;
+            camera.updateMatrix();
+            //camera.lookAt(new THREE.Vector3(0.,0,-1));
+            scene.add(camera);
+
+            //光源
+            var ambientLight = new THREE.AmbientLight(0x555555);
+            scene.add(ambientLight);
+
+            pointLight = new THREE.PointLight( 0xff6600, 1, 50 );
+            scene.add( pointLight );
+
+            spotLight = new THREE.SpotLight( 0xaaaaaa ,2,0,Math.PI/4, 1);
+            spotLight.position.set( 0, 0, -1 );
+            spotLight.castShadow = false;
+            scene.add( spotLight );
+
+            shadowLight=new THREE.DirectionalLight(0xaaaaaa, 4, 1);
+            shadowLight.position.set( 0, 0, -1 );
+            shadowLight.castShadow = true;
+            shadowLight.onlyShadow = true;
+            shadowLight.shadowCameraNear = 2;
+            shadowLight.shadowCameraFar = 200;
+            shadowLight.shadowCameraLeft = -10;
+            shadowLight.shadowCameraRight = 10;
+            shadowLight.shadowCameraTop = 10;
+            shadowLight.shadowCameraBottom = -10;
+            shadowLight.shadowCameraVisible = false;
+            shadowLight.shadowBias = 0;
+            shadowLight.shadowDarkness = 0.5;
+            shadowLight.shadowMapWidth = 512;
+            shadowLight.shadowMapHeight = 512;
+            scene.add( shadowLight );
+
+            THREEx.WindowResize(renderer, camera);
+        }
+
+        function animate(){
+            requestAnimationFrame(animate);
+            render();
+        }
+        function render(){
+            //更新地图
+            renderer.render(scene,camera);
+        }
+
+    </script>
+
+
+
+
+
+
+</head>
+
+<body onload="main()">
+
+<div id="container"></div>
+
+<div class='windoz' id='win'>
+    <h1>恭喜您!</h1>
+    <h2>您赢了 :)</h2>
+    <div class='petit'>请阅读我们的教程，5天学会游戏开发 ;)</div><br/>
+    <a href='#' onclick="GAME.restart()">重玩</a>
+</div>
+
+<div class='windoz' id='loose'>
+    <img src='images/noob.png' style='float: right'/>
+    <h1>菜鸟 !</h1>
+    <a href='#' onclick="GAME.restart()">再来一次</a>
+</div>
+
+<div class='windoz' id='start'>
+    <h1>飞行游戏</h1>
+    <img src='images/arrowKeys.png' style='float: right'/>
+    <p>穿过高楼大厦，别掉下来了:),方向键控制,玩10次以上才算入门哦。</p>
+    <a href='#' onclick="GAME.start()">开始</a>
+</div>
+
+</body>
+</html>
