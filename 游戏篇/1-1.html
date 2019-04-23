@@ -6,14 +6,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 
-    <script src="js/three.js"></script>
+    <script src="js/Three.js"></script>
     <script src="js/Detector.js"></script>
     <script src="js/THREEx.FullScreen.js"></script>
     <script src="js/THREEx.WindowResize.js"></script>
 
     <script src="js/loaders/ColladaLoader.js"></script>
-    <link  href="css/main.css" rel="stylesheet"/>
+    <link href="css/main.css" rel="stylesheet"/>
     <script type="text/javascript">
+        var MAPS =(function() {
+            var maps = [];
+            maps[0]={
+                "mapString[]":"", //地图信息
+            }
+            return {
+
+            }
+
+        })();
         var GAME = (function(){
             var show = function(id){
                 document.getElementById(id).style.display = "block";
@@ -63,7 +73,7 @@
                     preserveDrawingBuffer	: true	// to allow screenshot
                 });
                 //renderer.setFaceCulling(false);
-                renderer.setClearColorHex( 0xBBBBBB, 1 );
+                renderer.setClearColor( 0xBBBBBB, 1 );
                 renderer.shadowMapEnabled = true;
                 renderer.shadowMapSoft = true;
 
@@ -82,12 +92,51 @@
             scene = new THREE.Scene();
             scene.fog = new THREE.Fog( 0x000022, 10, 300 );
 
+            //加载飞机模型
+            // var loader = new THREE.ColladaLoader();
+            // loader.options.convertUpAxis = true;
+            // loader.load( 'tux.dae', function colladaReady( collada ) {
+            //
+            //     var tuxScene = collada.scene;
+            //     skin = collada.skins[ 0 ];
+            //
+            //     tuxScene.scale.x = tuxScene.scale.y = tuxScene.scale.z = 1;
+            //     tuxScene.updateMatrix();
+            //     spotLight.target=tuxScene;
+            //     shadowLight.target=tuxScene;
+            //     tux=tuxScene;
+            //     tux.children[0].castShadow = true;
+            //     tux.children[0].receiveShadow = false;
+            //     //camera.lookAt(tux);
+            //     //camera.updateMatrix();
+            //     scene.add(tux);
+            // } );
 
 
             //加载模型天空地图
 
+            //模型
+            var loader = new THREE.ColladaLoader();
+            loader.options.convertUpAxis = true;
+            loader.load( 'tux.dae', function colladaReady( collada ) {
+
+                var tuxScene = collada.scene;
+                skin = collada.skins[ 0 ];
+
+                tuxScene.scale.x = tuxScene.scale.y = tuxScene.scale.z = 1;
+                tuxScene.updateMatrix();
+                spotLight.target=tuxScene;
+                shadowLight.target=tuxScene;
+                tux=tuxScene;
+                tux.children[0].castShadow = true;
+                tux.children[0].receiveShadow = false;
+                //camera.lookAt(tux);
+                //camera.updateMatrix();
+                scene.add(tux);
+            } );
+
             //天空
-            var textureCube = THREE.ImageUtils.CubeTextureLoader( ["images/skybox/posx.jpg", "images/skybox/negx.jpg", "images/skybox/posy.jpg", "images/skybox/negy.jpg", "images/skybox/posz.jpg", "images/skybox/negz.jpg"] );
+            var textureCube = THREE.ImageUtils.loadTextureCube( ["images/skybox/posx.jpg", "images/skybox/negx.jpg", "images/skybox/posy.jpg", "images/skybox/negy.jpg", "images/skybox/posz.jpg", "images/skybox/negz.jpg"] );
             var shader = THREE.ShaderUtils.lib["cube"];
             //var uniforms = THREE.UniformsUtils.clone( shader.uniforms );
             shader.uniforms[ "tCube" ].texture = textureCube;
@@ -105,8 +154,8 @@
             skyboxMesh.flipSided=true;
             skyboxMesh.castShadow = false;
             skyboxMesh.receiveShadow = false;
-
             scene.add(skyboxMesh);
+
 
             //相机
             camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 10000 );
@@ -151,6 +200,7 @@
         function animate(){
             requestAnimationFrame(animate);
             render();
+
         }
         function render(){
             //更新地图

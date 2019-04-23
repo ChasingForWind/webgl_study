@@ -10,7 +10,7 @@ THREE.ColladaLoader = function () {
 
 	var readyCallbackFunc = null;
 
- 	var sources = {};
+	var sources = {};
 	var images = {};
 	var animations = {};
 	var controllers = {};
@@ -373,9 +373,9 @@ THREE.ColladaLoader = function () {
 			var daeGeometry = geometries[ target_id ];
 
 			if ( !daeGeometry.mesh ||
-				 !daeGeometry.mesh.primitives ||
-				 !daeGeometry.mesh.primitives.length ) {
-				 continue;
+				!daeGeometry.mesh.primitives ||
+				!daeGeometry.mesh.primitives.length ) {
+				continue;
 			}
 
 			var target = daeGeometry.mesh.primitives[ 0 ].geometry;
@@ -559,7 +559,7 @@ THREE.ColladaLoader = function () {
 
 		var animationBounds = calcAnimationBounds();
 		var skeleton = daeScene.getChildById( instanceCtrl.skeleton[0], true ) ||
-					   daeScene.getChildBySid( instanceCtrl.skeleton[0], true );
+			daeScene.getChildBySid( instanceCtrl.skeleton[0], true );
 
 		var i, j, w, vidx, weight;
 		var v = new THREE.Vector3(), o, s;
@@ -664,7 +664,7 @@ THREE.ColladaLoader = function () {
 
 						var second = controllers[ controller.skin.source ];
 						morphController = second;
-					//	skinController = node.controllers[i];
+						//	skinController = node.controllers[i];
 
 						if ( second.morph && geometries[ second.morph.source ] ) {
 
@@ -2003,7 +2003,7 @@ THREE.ColladaLoader = function () {
 
 					var propName = 'n' + ( member[ 0 ] + 1 ) + ( member[ 1 ] + 1 );
 					this.obj[ propName ] = data;
-					
+
 				} else {
 
 					console.log('Incorrect addressing of matrix in transform.');
@@ -2320,14 +2320,14 @@ THREE.ColladaLoader = function () {
 
 		this.geometry3js.computeCentroids();
 		this.geometry3js.computeFaceNormals();
-		
+
 		if ( this.geometry3js.calcNormals ) {
-			
+
 			this.geometry3js.computeVertexNormals();
 			delete this.geometry3js.calcNormals;
-			
+
 		}
-		
+
 		this.geometry3js.computeBoundingBox();
 
 		return this;
@@ -2421,7 +2421,7 @@ THREE.ColladaLoader = function () {
 								break;
 
 							default:
-							
+
 								break;
 
 						}
@@ -2824,35 +2824,35 @@ THREE.ColladaLoader = function () {
 
 		//for (var i = 0; i < this.accessor.params.length; i++) {
 
-			var param = this.accessor.params[ 0 ];
+		var param = this.accessor.params[ 0 ];
 
-			//console.log(param.name + " " + param.type);
+		//console.log(param.name + " " + param.type);
 
-			switch ( param.type ) {
+		switch ( param.type ) {
 
-				case 'IDREF':
-				case 'Name': case 'name':
-				case 'float':
+			case 'IDREF':
+			case 'Name': case 'name':
+			case 'float':
 
-					return this.data;
+				return this.data;
 
-				case 'float4x4':
+			case 'float4x4':
 
-					for ( var j = 0; j < this.data.length; j += 16 ) {
+				for ( var j = 0; j < this.data.length; j += 16 ) {
 
-						var s = this.data.slice( j, j + 16 );
-						var m = getConvertedMat4( s );
-						result.push( m );
-					}
+					var s = this.data.slice( j, j + 16 );
+					var m = getConvertedMat4( s );
+					result.push( m );
+				}
 
-					break;
+				break;
 
-				default:
+			default:
 
-					console.log( 'ColladaLoader: Source: Read dont know how to read ' + param.type + '.' );
-					break;
+				console.log( 'ColladaLoader: Source: Read dont know how to read ' + param.type + '.' );
+				break;
 
-			}
+		}
 
 		//}
 
@@ -3972,11 +3972,11 @@ THREE.ColladaLoader = function () {
 					}
 
 				}
-				
+
 			}
 
 		}
-		
+
 		return this;
 
 	};
@@ -4322,7 +4322,7 @@ THREE.ColladaLoader = function () {
 			data[4], data[5], data[6], data[7],
 			data[8], data[9], data[10], data[11],
 			data[12], data[13], data[14], data[15]
-			);
+		);
 
 	};
 
@@ -4339,7 +4339,7 @@ THREE.ColladaLoader = function () {
 		}
 
 		return index;
-		
+
 	};
 
 	function getConvertedMember( member ) {
