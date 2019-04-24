@@ -6,7 +6,9 @@ console.log('简单场景');
  //地板，自然光，光
 var meshFloor,ambientLight,light;
 
-var USE_WIREFRAME = false;
+var USE_WIREFRAME = false;  //定义物体结构样式
+var keyboard = {};          //定义键盘
+var player = {speed:0.2,turnSpeed: Math.PI*0.02};  //定义一些常数
 
  function init(){
      //创建场景
@@ -62,10 +64,6 @@ var USE_WIREFRAME = false;
 
 
 
-
-
-
-
      //渲染器
 
      renderer = new THREE.WebGLRenderer();
@@ -82,7 +80,37 @@ function animate(){
      requestAnimationFrame(animate);
      mesh.rotation.x += 0.01;
      mesh.rotation.y += 0.01;
+
+     if(keyboard[87]){  //按下w建时
+         camera.position.x -= Math.sin(camera.rotation.y)*player.speed;
+         camera.position.z -= Math.cos(camera.rotation.y)*player.speed;
+     }
+    if(keyboard[83]){  //按下s建时
+        camera.position.x += Math.sin(camera.rotation.y)*player.speed;
+        camera.position.z += Math.cos(camera.rotation.y)*player.speed;
+    }
+    if(keyboard[65]){  //按下a建时
+        camera.position.x += Math.sin(camera.rotation.y+Math.PI/2)*player.speed;
+        camera.position.z += -Math.cos(camera.rotation.y+Math.PI/2)*player.speed;
+    }
+    if(keyboard[68]){  //按下d建时
+        camera.position.x += Math.sin(camera.rotation.y-Math.PI/2)*player.speed;
+        camera.position.z += -Math.cos(camera.rotation.y-Math.PI/2)*player.speed;
+    }
+
+
      renderer.render(scene,camera);
 }
+
+function keyDown(event){
+     keyboard[event.keyCode] = true;
+}
+
+function keyUp(event){
+     keyboard[event.keyCode] = false;
+}
+
+window.addEventListener('keydown',keyDown);
+ window.addEventListener('keyup',keyUp);
 
 window.onload = init;
