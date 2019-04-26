@@ -5,6 +5,7 @@ console.log('简单场景');
 
  //地板，自然光，光
 var meshFloor,ambientLight,light;
+var texture,normalMap;
 
 var USE_WIREFRAME = false;  //定义物体结构样式
 var keyboard = {};          //定义键盘
@@ -27,10 +28,18 @@ var player = {speed:0.2,turnSpeed: Math.PI*0.02};  //定义一些常数
      //物体和材质
 
      /*物体*/
+     texture = new THREE.TextureLoader().load(
+         'crate0/crate0_diffuse.jpg'
+     );
+     normalMap = new THREE.TextureLoader().load(
+       'crate0/crate0_normal.jpg'
+     );
      mesh = new THREE.Mesh(
          new THREE.BoxGeometry(1,1,1),new THREE.MeshPhongMaterial({
              color:0xff4444,
-             wireframe: USE_WIREFRAME
+             map:texture,
+             wireframe: USE_WIREFRAME,
+             normalMap:normalMap
          })
      );
      mesh.position.y += 1;
@@ -51,8 +60,7 @@ var player = {speed:0.2,turnSpeed: Math.PI*0.02};  //定义一些常数
      scene.add(mesh);
 
      /*灯光*/
-     ambientLight = new THREE.AmbientLight(0xffffff,0,2);
-
+     ambientLight = new THREE.AmbientLight(0xffffff,0.3);
      light = new THREE.PointLight(0xffffff,0.8,18);
      light.position.set(-3,6,-3);
      light.castShadow = true;
@@ -82,12 +90,12 @@ function animate(){
      mesh.rotation.y += 0.01;
 
      if(keyboard[87]){  //按下w建时
-         camera.position.x -= Math.sin(camera.rotation.y)*player.speed;
-         camera.position.z -= Math.cos(camera.rotation.y)*player.speed;
+         camera.position.x += Math.sin(camera.rotation.y)*player.speed;
+         camera.position.z += Math.cos(camera.rotation.y)*player.speed;
      }
     if(keyboard[83]){  //按下s建时
-        camera.position.x += Math.sin(camera.rotation.y)*player.speed;
-        camera.position.z += Math.cos(camera.rotation.y)*player.speed;
+        camera.position.x -= Math.sin(camera.rotation.y)*player.speed;
+        camera.position.z -= Math.cos(camera.rotation.y)*player.speed;
     }
     if(keyboard[65]){  //按下a建时
         camera.position.x += Math.sin(camera.rotation.y+Math.PI/2)*player.speed;
@@ -97,6 +105,16 @@ function animate(){
         camera.position.x += Math.sin(camera.rotation.y-Math.PI/2)*player.speed;
         camera.position.z += -Math.cos(camera.rotation.y-Math.PI/2)*player.speed;
     }
+
+    if(keyboard[37]){  //按下d建时
+        camera.rotation.y -= player.turnSpeed;
+    }
+    if(keyboard[39]){  //按下d建时
+        camera.rotation.y += player.turnSpeed;
+    }
+
+
+
 
 
      renderer.render(scene,camera);
