@@ -28,6 +28,26 @@ var player = {speed:0.2,turnSpeed: Math.PI*0.02};  //定义一些常数
      //物体和材质
 
      /*物体*/
+     var mtlLoader = new THREE.MTLLoader();
+     mtlLoader.load("models/Tent_Poles_01.mtl",
+         function (materials) {
+             var objLoader = new THREE.OBJLoader();
+             objLoader.setMaterials(materials);
+             objLoader.load("models/Tent_Poles_01.obj",
+                function(mesh) {
+                    mesh.traverse(function(node){
+                        if(node instanceof THREE.Mesh){
+                            node.castShadow = true;
+                        }
+                    });
+                    mesh.position.set(-1,2,1)
+                    castShadow = true;
+                    scene.add(mesh);
+                }
+             )
+         }
+     );
+
      texture = new THREE.TextureLoader().load(
          'crate0/crate0_diffuse.jpg'
      );
@@ -60,8 +80,8 @@ var player = {speed:0.2,turnSpeed: Math.PI*0.02};  //定义一些常数
      scene.add(mesh);
 
      /*灯光*/
-     ambientLight = new THREE.AmbientLight(0xffffff,0.3);
-     light = new THREE.PointLight(0xffffff,0.8,18);
+     ambientLight = new THREE.AmbientLight(0xffffff,0.2);
+     light = new THREE.PointLight(0xffffff,0.8);
      light.position.set(-3,6,-3);
      light.castShadow = true;
 
