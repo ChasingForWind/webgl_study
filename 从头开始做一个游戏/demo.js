@@ -9,25 +9,43 @@ var meshFloor,ambientLight,light;
 var keyboard = {};
 var  player = {height:1.8,speed:0.2,turnSpeed:Math.PI*0.02};
 
+//小屏幕
+var loadingScreen = {
+    scene: new THREE.Scene(),
+    camera: new THREE.PerspectiveCamera(90, 1280/720, 0.1, 100),
+    box: new THREE.Mesh(
+        new THREE.BoxGeometry(0.5,0.5,0.5),
+        new THREE.MeshBasicMaterial({ color:0x4444ff })
+    )
+};
+
 //其他常数
 USE_WIREFRAME = false;
 var loadingManager = null;
 var RESOURCES_LOADED = false;
 
-//小屏幕
-var loadingScreen = {
-    scene :
-}
-
 
 //主函数
 function init() {
+
     //场景
     scene =new THREE.Scene();
     //相机
     camera =new THREE.PerspectiveCamera(90,1280/720,0.1,1000);
     camera.position.set(0,player.height,-5);
     camera.lookAt(new THREE.Vector3(0,player.height,0));
+    //小屏幕
+    loadingScreen.box.position.set(0,0,5);
+    loadingScreen.camera.lookAt(loadingScreen.box.position);
+    loadingScreen.scene.add(loadingScreen.box);
+
+
+    //载入中
+    loadingManager = new THREE.LoadingManager();
+    loadingManager.onProgress = function(item,loaded,total){
+        console.log(item,loaded,total);
+    };
+
     //光线
     ambientLight = new THREE.AmbientLight(0xffffff,0.2);
     scene.add(ambientLight);
@@ -81,6 +99,16 @@ function init() {
 //帧函数
 function animate(){
     requestAnimationFrame(animate);
+
+    //小屏幕部分
+    if( RESOURCES_LOADED == false ) {
+        loadingScreen.box.position.x -= 0.05;
+        if (loadingScreen.box.position.x < -10) loadingScreen.box.position.x = 10;
+        loadingScreen.box.position.y = Math.sin(loadingScreen.box.position.x);
+        renderer.render(loadingScreen.scene, loadingScreen.camera);
+        return;
+    }
+
     mesh.rotation.x += 0.01;
     mesh.rotation.y += 0.01;
 
