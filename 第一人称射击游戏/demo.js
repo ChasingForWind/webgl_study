@@ -61,6 +61,7 @@ function init(){
 	loadingManager = new THREE.LoadingManager();
 	loadingManager.onProgress = function(item, loaded, total){
 		console.log(item, loaded, total);
+		console.log('看看我爸');
 	};
 	loadingManager.onLoad = function(){
 		console.log("loaded all resources");
@@ -267,7 +268,7 @@ function animate(){
 	}
 	
 	// shoot a bullet
-	if(keyboard[32] && player.canShoot <= 0){ // spacebar key
+	if(keyboard[32] && player.canShoot <= 0){ // spacebar ke
 		// creates a bullet as a Mesh object
 		var bullet = new THREE.Mesh(
 			new THREE.SphereGeometry(0.05,8,8),

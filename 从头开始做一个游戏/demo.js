@@ -9,7 +9,7 @@ var meshFloor,ambientLight,light;
 var keyboard = {};
 var  player = {height:1.8,speed:0.2,turnSpeed:Math.PI*0.02};
 
-//小屏幕
+//载入中的一些常数
 var loadingScreen = {
     scene: new THREE.Scene(),
     camera: new THREE.PerspectiveCamera(90, 1280/720, 0.1, 100),
@@ -17,6 +17,32 @@ var loadingScreen = {
         new THREE.BoxGeometry(0.5,0.5,0.5),
         new THREE.MeshBasicMaterial({ color:0x4444ff })
     )
+};
+
+//模型的地址
+var models = {
+    tent: {
+        obj: "models/Tent_Poles_01.obj",
+        mtl: "models/Tent_Poles_01.mtl",
+        mesh: null
+    },
+    campfire: {
+        obj:"models/Campfire_01.obj",
+        mtl:"models/Campfire_01.mtl",
+        mesh: null
+    },
+    pirateship: {
+        obj:"models/Pirateship.obj",
+        mtl:"models/Pirateship.mtl",
+        mesh: null
+    },
+    // uzi: {
+    //     obj:"models/uziGold.obj",
+    //     mtl:"models/uziGold.mtl",
+    //     mesh: null,
+    //     castShadow:false
+    // }
+    //
 };
 
 //其他常数
@@ -34,16 +60,25 @@ function init() {
     camera =new THREE.PerspectiveCamera(90,1280/720,0.1,1000);
     camera.position.set(0,player.height,-5);
     camera.lookAt(new THREE.Vector3(0,player.height,0));
-    //小屏幕
+    //载入中的小方块
     loadingScreen.box.position.set(0,0,5);
     loadingScreen.camera.lookAt(loadingScreen.box.position);
     loadingScreen.scene.add(loadingScreen.box);
 
 
-    //载入中
+    //载入中。。。。。
     loadingManager = new THREE.LoadingManager();
+
+    /*载入*/
     loadingManager.onProgress = function(item,loaded,total){
         console.log(item,loaded,total);
+        console.log('我在哪儿？');
+    };
+    /*载入完成*/
+    loadingManager.onLoad = function(){
+        console.log('模型载入完成！');
+        RESOURCES_LOADED = true;
+        onResourcesLoaded();
     };
 
     //光线
@@ -93,21 +128,45 @@ function init() {
 
 }
 
+//载入模型函数
+function onResourcesLoaded(){
+    //复制所有的模型到meshes里
+    meshes['tent1'] = models.tent.mesh.clone();
+    meshes['tent2'] = models.tent.mesh.clone();
+    meshes["campfire1"] = models.campfire.mesh.clone();
+    meshes["campfire2"] = models.campfire.mesh.clone();
+    meshes["pirateship"] = models.pirateship.mesh.clone();
 
+    //设置模型位置并添加到场景里
+    meshes['tent1'].position.set(-5,0,4);
+    meshes["tent2"].position.set(-8, 0, 4);
+    scene.add(meshes['tent1']);
+    scene.add(meshes["tent2"]);
+
+    meshes["campfire1"].position.set(-5, 0, 1);
+    meshes["campfire2"].position.set(-8, 0, 1);
+    scene.add(meshes["campfire1"]);
+    scene.add(meshes["campfire2"]);
+
+    meshes["pirateship"].position.set(-11, -1, 1);
+    meshes["pirateship"].rotation.set(0, Math.PI, 0); // Rotate it to face the other way.
+    scene.add(meshes["pirateship"]);
+
+}
 
 
 //帧函数
 function animate(){
     requestAnimationFrame(animate);
 
-    //小屏幕部分
-    if( RESOURCES_LOADED == false ) {
-        loadingScreen.box.position.x -= 0.05;
-        if (loadingScreen.box.position.x < -10) loadingScreen.box.position.x = 10;
-        loadingScreen.box.position.y = Math.sin(loadingScreen.box.position.x);
-        renderer.render(loadingScreen.scene, loadingScreen.camera);
-        return;
-    }
+    //载入部分
+    // if( RESOURCES_LOADED == false ) {
+    //     loadingScreen.box.position.x -= 0.05;
+    //     if (loadingScreen.box.position.x < -10) loadingScreen.box.position.x = 10;
+    //     loadingScreen.box.position.y = Math.sin(loadingScreen.box.position.x);
+    //     renderer.render(loadingScreen.scene, loadingScreen.camera);
+    //     return;
+    // }
 
     mesh.rotation.x += 0.01;
     mesh.rotation.y += 0.01;
