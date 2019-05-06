@@ -7,7 +7,10 @@ var meshFloor,ambientLight,light;
 
 //键盘
 var keyboard = {};
-var  player = {height:1.8,speed:0.2,turnSpeed:Math.PI*0.02};
+var  player = {height:1.8,speed:0.2,turnSpeed:Math.PI*0.02,canShoot:5};
+
+//子弹数轴
+bullets = [];
 
 //载入中的一些常数
 var loadingScreen = {
@@ -20,6 +23,7 @@ var loadingScreen = {
 };
 
 //模型的地址
+var meshes = {};
 var models = {
     tent: {
         obj: "models/Tent_Poles_01.obj",
@@ -36,13 +40,13 @@ var models = {
         mtl:"models/Pirateship.mtl",
         mesh: null
     },
-    // uzi: {
-    //     obj:"models/uziGold.obj",
-    //     mtl:"models/uziGold.mtl",
-    //     mesh: null,
-    //     castShadow:false
-    // }
-    //
+    uzi: {
+        obj:"models/uziGold.obj",
+        mtl:"models/uziGold.mtl",
+        mesh: null,
+        castShadow:false
+    }
+
 };
 
 //其他常数
@@ -72,7 +76,6 @@ function init() {
     /*载入*/
     loadingManager.onProgress = function(item,loaded,total){
         console.log(item,loaded,total);
-        console.log('我在哪儿？');
     };
     /*载入完成*/
     loadingManager.onLoad = function(){
@@ -124,6 +127,40 @@ function init() {
     renderer.shadowMap.type = THREE.BasicShadowMap;
 
     document.body.appendChild(renderer.domElement);
+
+    //加载模型
+    for( var _key in models ){
+        (function(key){
+
+            var mtlLoader = new THREE.MTLLoader(loadingManager);
+            mtlLoader.load(models[key].mtl, function(materials){
+                materials.preload();
+
+                var objLoader = new THREE.OBJLoader(loadingManager);
+
+                objLoader.setMaterials(materials);
+                objLoader.load(models[key].obj, function(mesh){
+
+                    mesh.traverse(function(node){
+                        if( node instanceof THREE.Mesh ){
+                            if('castShadow' in models[key])
+                                node.castShadow = models[key].castShadow;
+                            else
+                                node.castShadow = true;
+
+                            if('receiveShadow' in models[key])
+                                node.receiveShadow = models[key].receiveShadow;
+                            else
+                                node.receiveShadow = true;
+                        }
+                    });
+                    models[key].mesh = mesh;
+
+                });
+            });
+
+        })(_key);
+    }
     animate();
 
 }
@@ -152,6 +189,11 @@ function onResourcesLoaded(){
     meshes["pirateship"].rotation.set(0, Math.PI, 0); // Rotate it to face the other way.
     scene.add(meshes["pirateship"]);
 
+    meshes["playerweapon"] = models.uzi.mesh.clone();
+    meshes["playerweapon"].position.set(0,2,0);
+    meshes["playerweapon"].scale.set(10,10,10);
+    scene.add(meshes["playerweapon"]);
+
 }
 
 
@@ -160,16 +202,29 @@ function animate(){
     requestAnimationFrame(animate);
 
     //载入部分
-    // if( RESOURCES_LOADED == false ) {
-    //     loadingScreen.box.position.x -= 0.05;
-    //     if (loadingScreen.box.position.x < -10) loadingScreen.box.position.x = 10;
-    //     loadingScreen.box.position.y = Math.sin(loadingScreen.box.position.x);
-    //     renderer.render(loadingScreen.scene, loadingScreen.camera);
-    //     return;
-    // }
+    if( RESOURCES_LOADED == false ) {
+        loadingScreen.box.position.x -= 0.05;
+        if (loadingScreen.box.position.x < -10) loadingScreen.box.position.x = 10;
+        loadingScreen.box.position.y = Math.sin(loadingScreen.box.position.x);
+        renderer.render(loadingScreen.scene, loadingScreen.camera);
+        return;
+    }
+    //时间变量
+    var time = Date.now()*0.0005;
+
 
     mesh.rotation.x += 0.01;
     mesh.rotation.y += 0.01;
+
+    //子弹
+    for (var index=0;index<bullets.length;index+=1){
+        if(bullets[index] === undefined) continue;
+        if(bullets[index].alive === false) {
+            bullets.splice(index,1);
+            continue;
+        }
+        bullets[index].position.add(bullets[index].velocity);
+    }
 
     //键盘部分
 
@@ -195,6 +250,46 @@ function animate(){
     if(keyboard[39]){//按下右键
         camera.rotation.y += player.turnSpeed;
     }
+
+    if(keyboard[32] && player.canShoot<=0){//按下空格键
+        console.log("子弹！");
+        var bullet = new THREE.Mesh(
+            new THREE.SphereGeometry(0.05,8,8),
+            new THREE.MeshBasicMaterial({color:0xffffff})
+        );
+
+        bullet.position.set(
+            meshes["playerweapon"].position.x,
+            meshes["playerweapon"].position.y+0.05,
+            meshes["playerweapon"].position.z,
+        )
+
+        bullet.velocity = new THREE.Vector3(
+            -Math.sin(camera.rotation.y),
+            0,
+            Math.cos(camera.rotation.y)
+        );
+        bullet.alive = true;
+        setTimeout(function(){
+            bullet.alive = false;
+            scene.remove(bullet);
+        },1000);
+        bullets.push(bullet);
+        scene.add(bullet);
+        player.canShoot = 10;
+    }
+    if(player.canShoot > 0) player.canShoot -=1;
+
+    meshes["playerweapon"].position.set(
+      camera.position.x - Math.sin(camera.rotation.y + Math.PI/6)*0.75,
+        camera.position.y - 0.5 + Math.sin(time*4 + camera.position.x + camera.position.z)*0.01,
+        camera.position.z + Math.cos(camera.rotation.y + Math.PI/6) * 0.75
+    );
+    meshes["playerweapon"].rotation.set(
+        camera.rotation.x,
+        camera.rotation.y - Math.PI,
+        camera.rotation.z
+    );
 
     renderer.render(scene,camera);
 }
