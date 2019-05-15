@@ -1,0 +1,190 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# 创建的文件:12.05.2019 22:23:08
+
+newmtl Material__35
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka E:\BaiduYunDownload\L拉丝不锈钢\L拉丝不锈钢\拉丝 (1).jpg
+	map_Kd E:\BaiduYunDownload\L拉丝不锈钢\L拉丝不锈钢\拉丝 (1).jpg
+
+newmtl Material__31
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka E:\BaiduYunDownload\LED电子屏幕\LED电子屏幕\LED电子屏幕 (30).jpg
+	map_Kd E:\BaiduYunDownload\LED电子屏幕\LED电子屏幕\LED电子屏幕 (30).jpg
+
+newmtl Standard_1
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__29
+	Ns 9.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka E:\BaiduYunDownload\L拉丝不锈钢\L拉丝不锈钢\拉丝 (30).jpg
+	map_Kd E:\BaiduYunDownload\L拉丝不锈钢\L拉丝不锈钢\拉丝 (30).jpg
+
+newmtl Material__34
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka E:\BaiduYunDownload\L拉丝不锈钢\L拉丝不锈钢\拉丝 (30).jpg
+	map_Kd E:\BaiduYunDownload\L拉丝不锈钢\L拉丝不锈钢\拉丝 (30).jpg
+
+newmtl Material__28
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka E:\BaiduYunDownload\L拉丝不锈钢\L拉丝不锈钢\拉丝 (2).jpg
+	map_Kd E:\BaiduYunDownload\L拉丝不锈钢\L拉丝不锈钢\拉丝 (2).jpg
+
+newmtl Material__37
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka E:\BaiduYunDownload\L拉丝不锈钢\L拉丝不锈钢\拉丝 (11).jpg
+	map_Kd E:\BaiduYunDownload\L拉丝不锈钢\L拉丝不锈钢\拉丝 (11).jpg
+
+newmtl Material__36
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka E:\BaiduYunDownload\LED电子屏幕\LED电子屏幕\LED电子屏幕 (1).png
+	map_Kd E:\BaiduYunDownload\LED电子屏幕\LED电子屏幕\LED电子屏幕 (1).png
+
+newmtl 08___Default
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.8510 0.7216 0.0000
+
+newmtl 07___Default
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.8235 0.0196 0.0000
+
+newmtl 09___Default
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0510 0.7451 0.0000
+
+newmtl Material__33
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka E:\BaiduYunDownload\LED电子屏幕\LED电子屏幕\LED电子屏幕 (40).jpg
+	map_Kd E:\BaiduYunDownload\LED电子屏幕\LED电子屏幕\LED电子屏幕 (40).jpg
+
+newmtl Material__32
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka E:\BaiduYunDownload\LED电子屏幕\LED电子屏幕\LED电子屏幕 (41).jpg
+	map_Kd E:\BaiduYunDownload\LED电子屏幕\LED电子屏幕\LED电子屏幕 (41).jpg
+
+newmtl Material__30
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka E:\BaiduYunDownload\L拉丝不锈钢\L拉丝不锈钢\拉丝 (41).jpg
+	map_Kd E:\BaiduYunDownload\L拉丝不锈钢\L拉丝不锈钢\拉丝 (41).jpg
