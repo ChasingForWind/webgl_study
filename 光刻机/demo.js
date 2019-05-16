@@ -1,10 +1,9 @@
 //渲染器
-console.log('没进来？');
 var renderer;
 function initThree(){
     width = document.getElementById('canvas-frame').clientWidth;
     height = document.getElementById('canvas-frame').clientHeight;
-    renderer = new WebGLRenderer({
+    renderer = new THREE.WebGLRenderer({
         antialias:true
     });
     renderer.setSize(width,height);
@@ -16,13 +15,17 @@ function initThree(){
 var camera;
 function initCamera(){
     camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
-    camera.position.x = 0;
-    camera.position.y = 1000;
-    camera.position.z = 0;
+    camera.position.x = 500;
+    camera.position.y = 500;
+    camera.position.z = 500;
     camera.up.x = 0;
     camera.up.y = 0;
     camera.up.z = 1;
-    camera.lookAt(0,0,0);
+    camera.lookAt({
+        x : 0,
+        y : 0,
+        z : 0
+    });
 }
 
 //场景
@@ -34,20 +37,51 @@ function initScene() {
 //灯光
 var light;
 function initLight(){
-    light = new THREE.DirectionalLight(0xFF0000, 1.0, 0);
-    light.position.set(100, 100, 200);
+    light = new THREE.AmbientLight(0xffffff);
+    light.position.set(1000, 1000, 2000);
     scene.add(light);
 }
 //对象
-var cube;
+var geometry;
 function initObject() {
+    var geometry = new THREE.CubeGeometry(1,1,1);
+    var material = new THREE.MeshLambertMaterial({color:0xff0000, side: THREE.BackSide});
+    var mesh = new THREE.Mesh(geometry,material);
+    mesh.position = new THREE.Vector3(0,0,0);
+    scene.add(mesh);
 
+    var manager = new THREE.LoadingManager();
+    manager.onProgress = function ( item, loaded, total ) {
+
+        console.log( item, loaded, total );
+
+    };
+
+
+    var texture = new THREE.Texture();
+    var loader = new THREE.ImageLoader( manager );
+    loader.load( 'model/UV_Grid_Sm.jpg', function ( image ) {
+
+        texture.image = image;
+        texture.needsUpdate = true;
+
+    } );
+
+    var loader = new THREE.OBJLoader( manager );
+    loader.load( 'model/guangkeji.obj', function ( object ) {
+        object.traverse( function ( child ) {
+
+            if ( child instanceof THREE.Mesh ) {
+                child.material.map = texture;
+            }
+        } );
+
+        object.position.y = - 8;
+        scene.add( object );
+    })
 }
 
-
-
 function init() {
-
     initThree();
     initCamera();
     initScene();
