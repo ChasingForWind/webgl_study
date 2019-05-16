@@ -51,7 +51,7 @@ var models = {
 
 //其他常数
 USE_WIREFRAME = false;
-var loadingManager = null;
+var objLoader = new THREE.OBJLoader(loadingManager);
 var RESOURCES_LOADED = false;
 
 
